@@ -23,4 +23,6 @@ world\'s oldest and deepest freshwater lake.
 </string>
     <string name="incorrect_toast">Incorrect!
 </string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
 </resources>
