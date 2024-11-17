@@ -61,5 +61,16 @@
                 android:src="@drawable/arrow_right"
                 android:drawablePadding="4dp"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/result_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:textColor="#4CAF50"
+            />
     </LinearLayout>
 </FrameLayout>
