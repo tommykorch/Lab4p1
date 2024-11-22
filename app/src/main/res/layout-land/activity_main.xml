@@ -47,19 +47,19 @@
 
             <ImageButton
                 android:id="@+id/prev_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/height"
+                android:layout_height="@dimen/height"
                 android:contentDescription="@string/prev"
                 android:src="@drawable/arrow_left"
                 android:drawablePadding="4dp"/>
 
             <ImageButton
                 android:id="@+id/next_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/height"
+                android:layout_height="@dimen/height"
                 android:contentDescription="@string/next"
-                android:src="@drawable/arrow_right"
-                android:drawablePadding="4dp"/>
+                android:drawablePadding="4dp"
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
         <TextView
             android:id="@+id/result_text_view"
