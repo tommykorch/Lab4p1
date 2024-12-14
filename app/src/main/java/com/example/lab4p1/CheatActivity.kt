@@ -3,6 +3,7 @@ package com.example.lab4p1
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build // Import Build class
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -17,6 +18,7 @@ const val EXTRA_CHEAT_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_sh
 class CheatActivity : AppCompatActivity() {
     private lateinit var answerTextView: TextView
     private lateinit var showAnswerButton: Button
+    private lateinit var apiLevelTextView: TextView // New TextView for API level display
     private var answerIsTrue = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,10 @@ class CheatActivity : AppCompatActivity() {
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
         answerTextView = findViewById(R.id.answer_text_view)
         showAnswerButton = findViewById(R.id.show_answer_button)
+        apiLevelTextView = findViewById(R.id.api_level_text_view) // Initialize new TextView
+
+        // Display the Android API level
+        apiLevelTextView.text = "Android API Level: ${Build.VERSION.SDK_INT}"
 
         // Set up button click listener to show the answer
         showAnswerButton.setOnClickListener {

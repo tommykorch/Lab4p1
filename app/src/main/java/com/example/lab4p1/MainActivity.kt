@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
     private var currentIndex = 0
     private var correctAnswersCount = 0
 
+    // Track the number of hints used
+    private var hintsUsed = 0
+    private val maxHints = 3
+
     // Registering the ActivityResultLauncher for CheatActivity
     private val cheatLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -74,30 +78,48 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
             trueButton.visibility = View.VISIBLE
             falseButton.visibility = View.VISIBLE
-            resultTextView.visibility = View.GONE // Hide result when moving to next question.
+            resultTextView.visibility = View.GONE
         }
 
         cheatButton.setOnClickListener {
-            // Start CheatActivity using the registered launcher.
-            val answerIsTrue = questionBank[currentIndex].answer
-            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            cheatLauncher.launch(intent) // Launching CheatActivity with the launcher.
+            if (hintsUsed < maxHints) {
+                // Start CheatActivity using the registered launcher.
+                val answerIsTrue = questionBank[currentIndex].answer
+                val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+                cheatLauncher.launch(intent) // Launching CheatActivity with the launcher.
+
+                hintsUsed++ // Increment the number of hints used
+
+                // Disable cheat button if maximum hints reached
+                if (hintsUsed >= maxHints) {
+                    cheatButton.isEnabled = false // Disable the button after using all hints
+                    Toast.makeText(this, "You have used all your hints!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "No more hints available!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         prevButton.setOnClickListener {
             if (currentIndex > 0) {
-                currentIndex-- // Move to previous question only if not at first.
+                currentIndex--
             }
             updateQuestion()
             trueButton.visibility = View.VISIBLE
             falseButton.visibility = View.VISIBLE
-            resultTextView.visibility = View.GONE // Hide result when moving to previous question.
+            resultTextView.visibility = View.GONE
         }
 
         // Restore state if available.
         if (savedInstanceState != null) {
             currentIndex = savedInstanceState.getInt("current_question_index", 0)
             correctAnswersCount = savedInstanceState.getInt("correct_answers_count", 0)
+            hintsUsed = savedInstanceState.getInt("hints_used", 0) // Restore number of hints used
+
+            // Disable cheat button if maximum hints were reached before rotation
+            if (hintsUsed >= maxHints) {
+                cheatButton.isEnabled = false
+            }
         }
 
         updateQuestion()
@@ -105,9 +127,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         outState.putInt("current_question_index", currentIndex)
         outState.putInt("correct_answers_count", correctAnswersCount)
+        outState.putInt("hints_used", hintsUsed) // Save number of hints used
     }
 
     private fun updateQuestion() {
